@@ -1,11 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito+Sans:wght@600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-baby-bg text-baby-text font-sans antialiased;
+    @apply bg-baby-bg text-baby-text antialiased;
+    font-family: 'Nunito Sans', sans-serif;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Quicksand', sans-serif;
   }
 
   .high-contrast body,
@@ -64,22 +71,74 @@
 
 @layer components {
   .btn-answer {
-    @apply w-full min-h-touch text-answer font-bold rounded-2xl border-4 
-           transition-all duration-200 active:scale-95
+    @apply w-full min-h-touch font-bold rounded-xl border-4
+           transition-all duration-100
            focus:outline-none focus:ring-4 focus:ring-baby-accent;
+    box-shadow: 0 12px 0 0 rgba(0,0,0,0.05);
+  }
+
+  .btn-answer:active {
+    transform: translateY(8px);
+    box-shadow: 0 4px 0 0 rgba(0,0,0,0.05);
   }
 
   .btn-answer-default {
-    @apply btn-answer bg-white border-baby-secondary text-baby-text;
+    @apply btn-answer;
+    border-color: #bddefe;
+    background-color: #bddefe;
+    color: #43627e;
   }
 
   .btn-answer-selected {
-    @apply btn-answer bg-baby-secondary border-baby-secondary text-white;
+    @apply btn-answer;
+    border-color: #ffb7ce;
+    background-color: #ffb7ce;
+    color: #7b4458;
   }
 
   .card {
-    @apply bg-white rounded-3xl shadow-lg p-4 sm:p-6;
+    @apply bg-white rounded-puffy shadow-lg p-4 sm:p-6;
   }
+
+  .puffy-button {
+    box-shadow: 0 12px 0 0 rgba(0,0,0,0.05);
+    transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .puffy-button:active {
+    transform: translateY(8px);
+    box-shadow: 0 4px 0 0 rgba(0,0,0,0.05);
+  }
+
+  .soft-shadow {
+    box-shadow: 0 10px 30px -10px rgba(134, 77, 97, 0.2);
+  }
+
+  .puffy-card {
+    box-shadow: 0 10px 30px -5px rgba(134, 77, 97, 0.1);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .puffy-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -10px rgba(134, 77, 97, 0.15);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
 }
 
 @keyframes confetti-fall {
@@ -93,8 +152,27 @@
   }
 }
 
+@keyframes bounce-number {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-40px) scale(1.1); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
 .duration-400 {
   transition-duration: 400ms;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-shake {
+  animation: shake 0.1s ease-in-out 3;
+  background-color: #ffdad6 !important;
 }
 
 @media (max-width: 374px) {
