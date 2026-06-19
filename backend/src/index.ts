@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { problemRouter } from './routes/problem';
 import { answerRouter } from './routes/answer';
 import { dashboardRouter } from './routes/dashboard';
+import { accountRouter } from './routes/account';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api', problemRouter);
 app.use('/api', answerRouter);
 app.use('/api', dashboardRouter);
+app.use('/api', accountRouter);
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'baby-math-backend' });

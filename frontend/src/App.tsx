@@ -3,6 +3,7 @@ import { SettingsProvider, useSettings } from './contexts/SettingsContext';
 import { PinGate } from './components/PinGate';
 import { PlayPage } from './pages/PlayPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { OnboardingPage } from './pages/OnboardingPage';
 
 type Tab = 'play' | 'dashboard';
 
@@ -32,9 +33,14 @@ function SettingsBar() {
 }
 
 function AppContent() {
+  const [onboarded, setOnboarded] = useState(() => localStorage.getItem('baby-math-onboarding') === 'complete');
   const [tab, setTab] = useState<Tab>('play');
   const { pin } = useSettings();
   const [pinAccepted, setPinAccepted] = useState(false);
+
+  if (!onboarded) {
+    return <OnboardingPage onComplete={() => setOnboarded(true)} />;
+  }
 
   const handleDashboardClick = () => {
     setTab('dashboard');

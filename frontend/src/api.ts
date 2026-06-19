@@ -49,6 +49,22 @@ export async function fetchPerformance(): Promise<PerformanceData> {
   return res.json();
 }
 
+export interface Account {
+  exists: boolean;
+  babyName?: string;
+  babyBirthDate?: string;
+}
+
+export async function createAccount(babyName: string, babyBirthDate: string): Promise<Account> {
+  const res = await fetch(`${API_BASE}/account`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ babyName, babyBirthDate }),
+  });
+  if (!res.ok) throw new Error('Failed to create account');
+  return res.json();
+}
+
 export async function submitAnswer(problemId: string, answerIndex: number): Promise<AnswerResult> {
   const res = await fetch(`${API_BASE}/answer`, {
     method: 'POST',
