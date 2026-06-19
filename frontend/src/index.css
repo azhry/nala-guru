@@ -97,7 +97,8 @@
   }
 
   .card {
-    @apply bg-white rounded-puffy shadow-lg p-4 sm:p-6;
+    @apply bg-white shadow-lg p-4 sm:p-6;
+    border-radius: 2rem;
   }
 
   .puffy-button {
