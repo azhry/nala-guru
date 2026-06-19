@@ -3,8 +3,8 @@ import { OpencodeProvider } from './opencode';
 import { OpenAIProvider } from './openai';
 
 const providers: AIProvider[] = [
-  new OpencodeProvider(),
   new OpenAIProvider(),
+  new OpencodeProvider(),
 ];
 
 export async function generateProblem(level: string): Promise<ProblemData> {
