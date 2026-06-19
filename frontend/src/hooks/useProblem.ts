@@ -9,11 +9,16 @@ export function useProblem() {
   const [result, setResult] = useState<AnswerResult | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [error, setError] = useState<string>('');
+  const [levelChanged, setLevelChanged] = useState(false);
+  const [newLevel, setNewLevel] = useState<string | null>(null);
+  const [progressPct, setProgressPct] = useState(0);
   const levelRef = useRef<string>('L1');
   const lastPromptRef = useRef<string>('');
 
   const loadProblem = useCallback(async () => {
     setState('loading');
+    setLevelChanged(false);
+    setNewLevel(null);
     setSelectedIndex(null);
     setResult(null);
     setError('');
@@ -45,10 +50,22 @@ export function useProblem() {
     try {
       const res = await submitAnswer(problem.problem_id, index);
       setResult(res);
+      if (res.level_changed && res.new_level) {
+        setLevelChanged(true);
+        setNewLevel(res.new_level);
+        levelRef.current = res.new_level;
+      }
+      if (res.progress_pct !== undefined) {
+        setProgressPct(res.progress_pct);
+      }
     } catch {
       setResult({ correct: false, guide_text: 'Something went wrong', guide_visuals: [] });
     }
   }, [problem, state]);
+
+  const dismissLevelUp = useCallback(() => {
+    setLevelChanged(false);
+  }, []);
 
   const nextProblem = useCallback(() => {
     loadProblem();
@@ -63,5 +80,9 @@ export function useProblem() {
     pickAnswer,
     nextProblem,
     currentLevel: levelRef.current,
+    levelChanged,
+    newLevel,
+    progressPct,
+    dismissLevelUp,
   };
 }

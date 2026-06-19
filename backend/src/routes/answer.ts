@@ -41,12 +41,17 @@ answerRouter.post('/answer', async (req: Request, res: Response) => {
       }))
     );
 
+    const newLevel = calibrator.getCurrentLevel();
+    const levelChange = calibrator.getLevelChangeInfo(newLevel);
     const guide = calibrator.getGuide(correct, problem.level);
 
     return res.json({
       correct,
       guide_text: guide.text,
       guide_visuals: guide.visuals,
+      level_changed: levelChange.levelChanged,
+      new_level: levelChange.newLevel,
+      progress_pct: levelChange.progressPct,
     });
   } catch (err) {
     console.error('Answer submission error:', err);

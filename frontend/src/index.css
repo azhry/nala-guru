@@ -82,6 +82,21 @@
   }
 }
 
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg) translateX(var(--drift, 0px));
+    opacity: 0;
+  }
+}
+
+.duration-400 {
+  transition-duration: 400ms;
+}
+
 @media (max-width: 374px) {
   html {
     font-size: 14px;

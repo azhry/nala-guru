@@ -51,6 +51,8 @@ export function DashboardPage() {
     );
   }
 
+  const isMaxLevel = data.currentLevel === 'L5';
+
   return (
     <div className="space-y-6 max-w-lg mx-auto">
       <div className="card text-center">
@@ -58,6 +60,24 @@ export function DashboardPage() {
         <p className="text-4xl font-bold text-baby-primary">
           {LEVEL_NAMES[data.currentLevel] || data.currentLevel}
         </p>
+        <div className="mt-4">
+          {isMaxLevel ? (
+            <p className="text-lg font-bold text-baby-accent">Max Level - Amazing!</p>
+          ) : (
+            <>
+              <div className="w-full h-5 bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all duration-700"
+                  style={{
+                    width: `${data.progressPct}%`,
+                    background: 'linear-gradient(90deg, #4ECDC4, #FFE66D)',
+                  }}
+                />
+              </div>
+              <p className="text-sm text-baby-text mt-1">{data.progressPct}% to next level</p>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="card">

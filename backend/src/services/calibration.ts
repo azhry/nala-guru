@@ -56,6 +56,35 @@ export class Calibrator {
     return streak;
   }
 
+  getProgressPct(): number {
+    if (this.sessions.length === 0) return 0;
+
+    const recent = this.sessions.slice(-10);
+    const levelIndex = LEVELS.indexOf(recent[recent.length - 1].level);
+    if (levelIndex === -1) return 0;
+
+    if (levelIndex >= LEVELS.length - 1) return 100;
+
+    const correctCount = recent.filter((s) => s.correct).length;
+    const accuracy = correctCount / recent.length;
+
+    if (accuracy <= 0.3) return 0;
+    if (accuracy >= 0.8) return 100;
+    return Math.round(((accuracy - 0.3) / (0.8 - 0.3)) * 100);
+  }
+
+  getLevelChangeInfo(newLevel: string): { levelChanged: boolean; oldLevel: string; newLevel: string; progressPct: number } {
+    const oldLevel = this.sessions.length > 0
+      ? this.sessions[this.sessions.length - 1].level
+      : LEVELS[0];
+    return {
+      levelChanged: oldLevel !== newLevel,
+      oldLevel,
+      newLevel,
+      progressPct: this.getProgressPct(),
+    };
+  }
+
   shouldAdvanceLevel(): boolean {
     return this.getStreak() >= STREAK_THRESHOLD;
   }
