@@ -22,6 +22,7 @@ export interface PerformanceData {
   sessions: SessionSummary[];
   streak: number;
   totalSessions: number;
+  progressPct: number;
 }
 
 export async function getPerformance(): Promise<PerformanceData> {
@@ -55,11 +56,25 @@ export async function getPerformance(): Promise<PerformanceData> {
     else break;
   }
 
+  const currentLevelIndex = LEVELS.indexOf(currentLevel);
+  let progressPct = 0;
+  if (currentLevelIndex >= LEVELS.length - 1) {
+    progressPct = 100;
+  } else {
+    const levelSessions = allSessions.filter((s) => s.level === currentLevel).slice(0, 10);
+    const correctCount = levelSessions.filter((s) => s.correct).length;
+    const accuracy = levelSessions.length > 0 ? correctCount / levelSessions.length : 0;
+    if (accuracy <= 0.3) progressPct = 0;
+    else if (accuracy >= 0.8) progressPct = 100;
+    else progressPct = Math.round(((accuracy - 0.3) / (0.8 - 0.3)) * 100);
+  }
+
   return {
     currentLevel,
     accuracyByLevel: accuracyByLevel,
     sessions: sessions.slice(0, 20),
     streak,
     totalSessions: allSessions.length,
+    progressPct,
   };
 }

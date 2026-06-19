@@ -2,9 +2,11 @@ import { useProblem } from '../hooks/useProblem';
 import { ProblemDisplay } from '../components/ProblemDisplay';
 import { FeedbackAnimation } from '../components/FeedbackAnimation';
 import { LevelIndicator } from '../components/LevelIndicator';
+import { LevelUpCelebration } from '../components/LevelUpCelebration';
+import { LEVEL_NAMES } from '../levelNames';
 
 export function PlayPage() {
-  const { problem, state, result, selectedIndex, error, pickAnswer, nextProblem, currentLevel } = useProblem();
+  const { problem, state, result, selectedIndex, error, pickAnswer, nextProblem, currentLevel, levelChanged, newLevel, dismissLevelUp } = useProblem();
 
   if (state === 'loading') {
     return (
@@ -39,6 +41,13 @@ export function PlayPage() {
 
       {state === 'feedback' && result && (
         <FeedbackAnimation result={result} onNext={nextProblem} />
+      )}
+
+      {levelChanged && newLevel && (
+        <LevelUpCelebration
+          levelName={LEVEL_NAMES[newLevel] || newLevel}
+          onDismiss={dismissLevelUp}
+        />
       )}
     </div>
   );

@@ -12,6 +12,9 @@ export interface AnswerResult {
   correct: boolean;
   guide_text: string;
   guide_visuals: string[];
+  level_changed?: boolean;
+  new_level?: string;
+  progress_pct?: number;
 }
 
 export async function fetchProblem(level?: string): Promise<Problem> {
@@ -41,6 +44,7 @@ export interface PerformanceData {
   sessions: SessionSummary[];
   streak: number;
   totalSessions: number;
+  progressPct: number;
 }
 
 export async function fetchPerformance(): Promise<PerformanceData> {
