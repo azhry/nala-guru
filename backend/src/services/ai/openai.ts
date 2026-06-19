@@ -1,6 +1,14 @@
 import crypto from 'crypto';
 import { AIProvider, ProblemData } from './provider';
 
+interface OpenAIChoice {
+  message: { content: string };
+}
+
+interface OpenAIResponse {
+  choices: OpenAIChoice[];
+}
+
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 export class OpenAIProvider implements AIProvider {
@@ -38,7 +46,7 @@ Return valid JSON only with fields: prompt (string), choices (array of 4 strings
       throw new Error(`OpenAI API error: ${res.status} ${await res.text()}`);
     }
 
-    const data = await res.json();
+    const data = (await res.json()) as OpenAIResponse;
     const content = data.choices[0].message.content;
     const cleaned = content.trim().replace(/^```json\s*|```\s*$/g, '');
     const parsed = JSON.parse(cleaned);
