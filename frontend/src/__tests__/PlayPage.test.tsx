@@ -8,7 +8,7 @@ const mockProblem = {
   prompt: 'What is 1 + 1?',
   choices: ['1', '2', '3', '4'],
   correct_index: 1,
-  level: 'counting',
+  level: 'L1',
 };
 
 const mockCorrectAnswer = {
@@ -20,7 +20,7 @@ const mockCorrectAnswer = {
 const mockWrongAnswer = {
   correct: false,
   guide_text: 'Count each item slowly.',
-  guide_visuals: ['counting-fingers'],
+  guide_visuals: ['counting-fingers', 'dots-visual'],
 };
 
 function mockFetchOnce(data: unknown) {

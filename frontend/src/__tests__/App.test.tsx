@@ -14,16 +14,16 @@ const sampleProblem = {
   prompt: 'What is 1 + 1?',
   choices: ['1', '2', '3', '4'],
   correct_index: 1,
-  level: 'counting',
+  level: 'L1',
 };
 
 const samplePerformance = {
-  currentLevel: 'addition_1',
+  currentLevel: 'L2',
   accuracyByLevel: [
-    { level: 'counting', total: 10, correct: 8, accuracy: 80 },
+    { level: 'L1', total: 10, correct: 8, accuracy: 80 },
   ],
   sessions: [
-    { problemId: 'p1', correct: true, level: 'counting', timestamp: '2026-06-19T03:00:00Z' },
+    { problemId: 'p1', correct: true, level: 'L1', timestamp: '2026-06-19T03:00:00Z' },
   ],
   streak: 3,
   totalSessions: 15,

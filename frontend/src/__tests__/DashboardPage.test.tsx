@@ -3,15 +3,15 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import { DashboardPage } from '../pages/DashboardPage';
 
 const mockPerformance = {
-  currentLevel: 'addition_1',
+  currentLevel: 'L2',
   accuracyByLevel: [
-    { level: 'counting', total: 10, correct: 8, accuracy: 80 },
-    { level: 'addition_1', total: 5, correct: 3, accuracy: 60 },
+    { level: 'L1', total: 10, correct: 8, accuracy: 80 },
+    { level: 'L2', total: 5, correct: 3, accuracy: 60 },
   ],
   sessions: [
-    { problemId: 'p1', correct: true, level: 'counting', timestamp: '2026-06-19T03:00:00Z' },
-    { problemId: 'p2', correct: false, level: 'addition_1', timestamp: '2026-06-19T03:01:00Z' },
-    { problemId: 'p3', correct: true, level: 'addition_1', timestamp: '2026-06-19T03:02:00Z' },
+    { problemId: 'p1', correct: true, level: 'L1', timestamp: '2026-06-19T03:00:00Z' },
+    { problemId: 'p2', correct: false, level: 'L2', timestamp: '2026-06-19T03:01:00Z' },
+    { problemId: 'p3', correct: true, level: 'L2', timestamp: '2026-06-19T03:02:00Z' },
   ],
   streak: 3,
   totalSessions: 15,
@@ -40,7 +40,7 @@ describe('DashboardPage - FE-002', () => {
     render(<DashboardPage />);
 
     await waitFor(() => {
-      const els = screen.getAllByText('Addition (Basic)');
+      const els = screen.getAllByText('L2 · Toddler');
       expect(els.length).toBeGreaterThanOrEqual(1);
     });
   });
@@ -50,8 +50,8 @@ describe('DashboardPage - FE-002', () => {
     render(<DashboardPage />);
 
     await waitFor(() => {
-      expect(screen.getAllByText('Counting').length).toBeGreaterThanOrEqual(1);
-      expect(screen.getAllByText('Addition (Basic)').length).toBeGreaterThanOrEqual(1);
+      expect(screen.getAllByText('L1 · Crawler').length).toBeGreaterThanOrEqual(1);
+      expect(screen.getAllByText('L2 · Toddler').length).toBeGreaterThanOrEqual(1);
       expect(screen.getByText('80%')).toBeDefined();
       expect(screen.getByText('60%')).toBeDefined();
     });
@@ -73,7 +73,7 @@ describe('DashboardPage - FE-002', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Recent Sessions')).toBeDefined();
-      const items = screen.getAllByText(/Counting|Addition/);
+      const items = screen.getAllByText(/L1|L2/);
       expect(items.length).toBeGreaterThanOrEqual(3);
     });
   });

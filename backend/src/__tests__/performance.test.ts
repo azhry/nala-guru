@@ -6,10 +6,10 @@ vi.mock('../models/Session', () => ({
       sort: vi.fn().mockReturnThis(),
       limit: vi.fn().mockReturnThis(),
       lean: vi.fn().mockResolvedValue([
-        { problemId: 'p1', correct: true, level: 'counting', timestamp: new Date('2026-06-19') },
-        { problemId: 'p2', correct: true, level: 'counting', timestamp: new Date('2026-06-19') },
-        { problemId: 'p3', correct: true, level: 'counting', timestamp: new Date('2026-06-19') },
-        { problemId: 'p4', correct: false, level: 'addition_1', timestamp: new Date('2026-06-19') },
+        { problemId: 'p1', correct: true, level: 'L1', timestamp: new Date('2026-06-19') },
+        { problemId: 'p2', correct: true, level: 'L1', timestamp: new Date('2026-06-19') },
+        { problemId: 'p3', correct: true, level: 'L1', timestamp: new Date('2026-06-19') },
+        { problemId: 'p4', correct: false, level: 'L2', timestamp: new Date('2026-06-19') },
       ]),
     }),
   },
@@ -20,15 +20,15 @@ import { getPerformance, PerformanceData } from '../services/performance';
 describe('Performance Service - BE-003', () => {
   it('returns current level from recent session', async () => {
     const data = await getPerformance();
-    expect(data.currentLevel).toBe('counting');
+    expect(data.currentLevel).toBe('L1');
   });
 
   it('returns accuracy grouped by level', async () => {
     const data = await getPerformance();
     expect(data.accuracyByLevel.length).toBeGreaterThan(0);
-    const counting = data.accuracyByLevel.find((a) => a.level === 'counting');
-    expect(counting).toBeDefined();
-    expect(counting!.accuracy).toBe(100);
+    const l1 = data.accuracyByLevel.find((a) => a.level === 'L1');
+    expect(l1).toBeDefined();
+    expect(l1!.accuracy).toBe(100);
   });
 
   it('returns session list with correct structure', async () => {

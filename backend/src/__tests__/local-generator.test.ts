@@ -3,7 +3,7 @@ import { LocalProvider } from '../services/ai/local';
 
 const provider = new LocalProvider();
 
-const validLevels = ['counting', 'addition_1', 'addition_2', 'subtraction_1', 'shapes'];
+const validLevels = ['L1', 'L2', 'L3', 'L4', 'L5'];
 
 describe('LocalProvider', () => {
   it.each(validLevels)('generates a valid problem for level %s', (level) => {
@@ -30,13 +30,13 @@ describe('LocalProvider', () => {
   });
 
   it('generates unique problemIds on each call', () => {
-    const p1 = provider.generateProblem('counting');
-    const p2 = provider.generateProblem('counting');
+    const p1 = provider.generateProblem('L1');
+    const p2 = provider.generateProblem('L1');
     expect(p1.problemId).not.toBe(p2.problemId);
   });
 
   it('never calls external APIs (no async)', () => {
-    const result = provider.generateProblem('counting');
+    const result = provider.generateProblem('L1');
     expect(result).toBeDefined();
   });
 
@@ -47,7 +47,7 @@ describe('LocalProvider', () => {
   it('provides different problems within same level', () => {
     const prompts = new Set<string>();
     for (let i = 0; i < 10; i++) {
-      const p = provider.generateProblem('counting');
+      const p = provider.generateProblem('L1');
       prompts.add(p.prompt);
     }
     expect(prompts.size).toBeGreaterThan(1);
