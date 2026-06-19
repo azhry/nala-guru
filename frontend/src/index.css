@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-baby-bg text-baby-text font-sans antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .btn-answer {
+    @apply w-full min-h-touch text-answer font-bold rounded-2xl border-4 
+           transition-all duration-200 active:scale-95
+           focus:outline-none focus:ring-4 focus:ring-baby-accent;
+  }
+
+  .btn-answer-default {
+    @apply btn-answer bg-white border-baby-secondary text-baby-text;
+  }
+
+  .btn-answer-selected {
+    @apply btn-answer bg-baby-secondary border-baby-secondary text-white;
+  }
+
+  .card {
+    @apply bg-white rounded-3xl shadow-lg p-6;
+  }
+}
