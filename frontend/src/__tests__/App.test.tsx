@@ -6,6 +6,7 @@ beforeEach(() => {
   vi.resetAllMocks();
   globalThis.fetch = vi.fn();
   localStorage.clear();
+  localStorage.setItem('baby-math-onboarding', 'complete');
   document.documentElement.classList.remove('high-contrast');
 });
 
@@ -166,5 +167,25 @@ describe('App - FE-003', () => {
 
     const unlockBtn = screen.getByText('Unlock');
     expect(unlockBtn).toBeDisabled();
+  });
+
+  it('shows onboarding page when not onboarded', () => {
+    localStorage.removeItem('baby-math-onboarding');
+    render(<App />);
+    expect(screen.getByText('Ready for your first math adventure?')).toBeDefined();
+  });
+
+  it('hides onboarding after completion', () => {
+    localStorage.removeItem('baby-math-onboarding');
+    render(<App />);
+    expect(screen.getByText('Ready for your first math adventure?')).toBeDefined();
+
+    localStorage.setItem('baby-math-onboarding', 'complete');
+    const { unmount } = render(<App />);
+    unmount();
+
+    localStorage.setItem('baby-math-onboarding', 'complete');
+    render(<App />);
+    expect(screen.getByText('Baby Math')).toBeDefined();
   });
 });
