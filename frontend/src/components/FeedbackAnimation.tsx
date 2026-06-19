@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnswerResult } from '../api';
 
@@ -40,7 +40,7 @@ export function FeedbackAnimation({ result, onNext }: Props) {
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.5 }}
-        className="card text-center space-y-6"
+        className="card text-center space-y-6 soft-shadow"
       >
         {result.correct ? (
           <>
@@ -51,12 +51,14 @@ export function FeedbackAnimation({ result, onNext }: Props) {
             >
               {emoji}
             </motion.div>
-            <p className="text-2xl font-bold text-green-500">Correct!</p>
+            <p className="text-2xl font-bold text-baby-tertiary font-quicksand">Correct!</p>
           </>
         ) : (
           <>
-            <p className="text-2xl font-bold text-baby-primary">Not quite!</p>
-            <div className="bg-baby-bg rounded-2xl p-4">
+            <div className="animate-shake inline-block rounded-xl p-4">
+              <p className="text-2xl font-bold text-baby-error font-quicksand">Not quite!</p>
+            </div>
+            <div className="bg-baby-surface-container rounded-2xl p-4">
               <p className="text-lg">{result.guide_text}</p>
             </div>
           </>
@@ -66,7 +68,7 @@ export function FeedbackAnimation({ result, onNext }: Props) {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-lg text-baby-text"
+            className="text-lg text-baby-on-surface-variant"
           >
             Next problem in {count}...
           </motion.p>

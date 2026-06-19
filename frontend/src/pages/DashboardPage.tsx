@@ -16,12 +16,12 @@ function AccuracyBar({ level, accuracy }: { level: string; accuracy: number }) {
   return (
     <div className="mb-3">
       <div className="flex justify-between text-sm mb-1">
-        <span className="font-medium text-baby-text">{label}</span>
+        <span className="font-medium text-baby-text font-quicksand">{label}</span>
         <span className="text-baby-text">{accuracy}%</span>
       </div>
-      <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+      <div className="w-full h-4 bg-baby-surface-container rounded-full overflow-hidden">
         <div
-          className="h-full rounded-full transition-all duration-500"
+          className="h-full rounded-full transition-all duration-700"
           style={{ width: `${accuracy}%`, backgroundColor: color }}
         />
       </div>
@@ -35,15 +35,15 @@ export function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-4xl animate-bounce">📊</div>
+        <div className="text-6xl animate-float">📊</div>
       </div>
     );
   }
 
   if (error || !data) {
     return (
-      <div className="card text-center">
-        <p className="text-xl text-baby-primary mb-4">{error || 'No data'}</p>
+      <div className="card text-center soft-shadow">
+        <p className="text-xl text-baby-primary mb-4 font-quicksand">{error || 'No data'}</p>
         <button onClick={reload} className="text-baby-secondary underline">
           Try again
         </button>
@@ -55,33 +55,36 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-6 max-w-lg mx-auto">
-      <div className="card text-center">
-        <h2 className="text-2xl font-bold text-baby-text mb-2">Current Level</h2>
-        <p className="text-4xl font-bold text-baby-primary">
+      <div className="card text-center soft-shadow puffy-card">
+        <div className="w-16 h-16 rounded-full bg-baby-secondary-container flex items-center justify-center text-2xl mx-auto mb-3">
+          🧮
+        </div>
+        <h2 className="text-2xl font-bold text-baby-text mb-2 font-quicksand">Current Level</h2>
+        <p className="text-4xl font-bold text-baby-primary font-quicksand">
           {LEVEL_NAMES[data.currentLevel] || data.currentLevel}
         </p>
         <div className="mt-4">
           {isMaxLevel ? (
-            <p className="text-lg font-bold text-baby-accent">Max Level - Amazing!</p>
+            <p className="text-lg font-bold text-baby-tertiary font-quicksand">Max Level - Amazing!</p>
           ) : (
             <>
-              <div className="w-full h-5 bg-gray-200 rounded-full overflow-hidden">
+              <div className="w-full h-5 bg-baby-surface-container rounded-full overflow-hidden">
                 <div
                   className="h-full rounded-full transition-all duration-700"
                   style={{
                     width: `${data.progressPct}%`,
-                    background: 'linear-gradient(90deg, #4ECDC4, #FFE66D)',
+                    background: 'linear-gradient(90deg, #ffb7ce, #864d61)',
                   }}
                 />
               </div>
-              <p className="text-sm text-baby-text mt-1">{data.progressPct}% to next level</p>
+              <p className="text-sm text-baby-on-surface-variant mt-1">{data.progressPct}% to next level</p>
             </>
           )}
         </div>
       </div>
 
-      <div className="card">
-        <h2 className="text-xl font-bold text-baby-text mb-4">Accuracy by Level</h2>
+      <div className="card soft-shadow puffy-card">
+        <h2 className="text-xl font-bold text-baby-text mb-4 font-quicksand">Accuracy by Level</h2>
         {data.accuracyByLevel.length === 0 ? (
           <p className="text-baby-text">No sessions recorded yet.</p>
         ) : (
@@ -91,39 +94,43 @@ export function DashboardPage() {
         )}
       </div>
 
-      <div className="card">
+      <div className="card soft-shadow puffy-card">
         <div className="grid grid-cols-2 gap-4 text-center">
           <div>
-            <p className="text-3xl font-bold text-baby-primary">{data.streak}</p>
+            <div className="text-4xl mb-1">🔥</div>
+            <p className="text-3xl font-bold text-baby-tertiary font-quicksand">{data.streak}</p>
             <p className="text-sm text-baby-text">Current Streak</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-baby-secondary">{data.totalSessions}</p>
+            <div className="text-4xl mb-1">⭐</div>
+            <p className="text-3xl font-bold text-baby-primary font-quicksand">{data.totalSessions}</p>
             <p className="text-sm text-baby-text">Total Sessions</p>
           </div>
         </div>
       </div>
 
-      <div className="card">
-        <h2 className="text-xl font-bold text-baby-text mb-4">Recent Sessions</h2>
+      <div className="card soft-shadow puffy-card">
+        <h2 className="text-xl font-bold text-baby-text mb-4 font-quicksand">Recent Sessions</h2>
         {data.sessions.length === 0 ? (
           <p className="text-baby-text">No sessions recorded yet.</p>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {data.sessions.slice(0, 10).map((s) => (
               <div
                 key={s.problemId + s.timestamp}
-                className="flex justify-between items-center py-2 border-b border-gray-100 last:border-0"
+                className="flex justify-between items-center p-4 rounded-2xl hover:bg-baby-surface-container-low transition-colors"
               >
-                <div className="flex items-center gap-2">
-                  <span className={s.correct ? 'text-green-500' : 'text-red-400'}>
-                    {s.correct ? '✓' : '✗'}
-                  </span>
-                  <span className="text-sm text-baby-text">
+                <div className="flex items-center gap-3">
+                  <div className={`p-3 rounded-xl ${s.correct ? 'bg-baby-secondary-container' : 'bg-baby-primary-container'}`}>
+                    <span className={s.correct ? 'text-baby-tertiary' : 'text-baby-primary'}>
+                      {s.correct ? '✓' : '✗'}
+                    </span>
+                  </div>
+                  <span className="text-sm text-baby-text font-quicksand">
                     {LEVEL_NAMES[s.level] || s.level}
                   </span>
                 </div>
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-baby-on-surface-variant">
                   {new Date(s.timestamp).toLocaleDateString()}
                 </span>
               </div>

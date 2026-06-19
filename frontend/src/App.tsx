@@ -14,19 +14,19 @@ function SettingsBar() {
     <div className="flex items-center gap-2">
       <button
         onClick={toggleMute}
-        className="text-xl p-2 rounded-full hover:bg-baby-accent/30 transition-colors"
+        className="w-12 h-12 rounded-full bg-baby-surface-container-high flex items-center justify-center hover:bg-baby-primary-container/20 transition-colors active:scale-95 duration-150"
         aria-label={muted ? 'Unmute sound' : 'Mute sound'}
         title={muted ? 'Unmute' : 'Mute'}
       >
-        {muted ? '🔇' : '🔊'}
+        <span className="text-xl">{muted ? '🔇' : '🔊'}</span>
       </button>
       <button
         onClick={toggleHighContrast}
-        className="text-xl p-2 rounded-full hover:bg-baby-accent/30 transition-colors"
+        className="w-12 h-12 rounded-full bg-baby-surface-container-high flex items-center justify-center hover:bg-baby-primary-container/20 transition-colors active:scale-95 duration-150"
         aria-label={highContrast ? 'Disable high contrast' : 'Enable high contrast'}
         title={highContrast ? 'High Contrast: On' : 'High Contrast: Off'}
       >
-        {highContrast ? '◑' : '◐'}
+        <span className="text-xl">{highContrast ? '◑' : '◐'}</span>
       </button>
     </div>
   );
@@ -48,32 +48,20 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-baby-bg">
-      <header className="py-3 sm:py-4 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <h1 className="text-2xl sm:text-3xl font-bold text-baby-primary">Baby Math</h1>
+    <div className="min-h-screen bg-baby-bg pb-24">
+      <header className="sticky top-0 z-40 bg-baby-surface/90 backdrop-blur-sm shadow-sm">
+        <div className="max-w-4xl mx-auto flex items-center justify-between h-touch px-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-baby-primary-container rounded-full flex items-center justify-center text-xl">
+              🧮
+            </div>
+            <h1 className="font-quicksand text-headline-lg-mobile text-baby-primary leading-none">Baby Math</h1>
+          </div>
           <SettingsBar />
         </div>
-        <nav className="mt-2 flex justify-center gap-3 sm:gap-4">
-          <button
-            onClick={() => setTab('play')}
-            className={`text-base sm:text-lg font-semibold px-4 sm:px-6 py-1.5 rounded-full transition-colors ${
-              tab === 'play' ? 'bg-baby-primary text-white' : 'text-baby-text hover:text-baby-primary'
-            }`}
-          >
-            Play
-          </button>
-          <button
-            onClick={handleDashboardClick}
-            className={`text-base sm:text-lg font-semibold px-4 sm:px-6 py-1.5 rounded-full transition-colors ${
-              tab === 'dashboard' && (pin || pinAccepted) ? 'bg-baby-primary text-white' : 'text-baby-text hover:text-baby-primary'
-            }`}
-          >
-            Dashboard
-          </button>
-        </nav>
       </header>
-      <main className="max-w-4xl mx-auto px-3 sm:px-4 pb-8">
+
+      <main className="max-w-4xl mx-auto px-3 sm:px-4 pb-8 pt-4">
         {tab === 'play' ? (
           <PlayPage />
         ) : pin ? (
@@ -84,6 +72,31 @@ function AppContent() {
           <PinGate onSuccess={() => setPinAccepted(true)} />
         )}
       </main>
+
+      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-baby-surface-container-lowest shadow-[0_-4px_20px_0_rgba(0,0,0,0.05)] rounded-t-lg">
+        <button
+          onClick={() => setTab('play')}
+          className={`flex flex-col items-center justify-center px-6 py-3 transition-all duration-200 ${
+            tab === 'play'
+              ? 'bg-baby-primary-container text-baby-on-primary-container rounded-xl'
+              : 'text-baby-on-surface-variant hover:bg-baby-surface-container-high transition-colors'
+          }`}
+        >
+          <span className="text-3xl material-symbols-outlined">charging_station</span>
+          <span className="text-sm mt-1 font-nunito-sans font-bold">Play</span>
+        </button>
+        <button
+          onClick={handleDashboardClick}
+          className={`flex flex-col items-center justify-center px-6 py-3 transition-all duration-200 ${
+            tab === 'dashboard' && (pin || pinAccepted)
+              ? 'bg-baby-primary-container text-baby-on-primary-container rounded-xl'
+              : 'text-baby-on-surface-variant hover:bg-baby-surface-container-high transition-colors'
+          }`}
+        >
+          <span className="text-3xl material-symbols-outlined">leaderboard</span>
+          <span className="text-sm mt-1 font-nunito-sans font-bold">Dashboard</span>
+        </button>
+      </nav>
     </div>
   );
 }
