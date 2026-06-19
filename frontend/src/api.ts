@@ -21,6 +21,34 @@ export async function fetchProblem(level?: string): Promise<Problem> {
   return res.json();
 }
 
+export interface LevelAccuracy {
+  level: string;
+  total: number;
+  correct: number;
+  accuracy: number;
+}
+
+export interface SessionSummary {
+  problemId: string;
+  correct: boolean;
+  level: string;
+  timestamp: string;
+}
+
+export interface PerformanceData {
+  currentLevel: string;
+  accuracyByLevel: LevelAccuracy[];
+  sessions: SessionSummary[];
+  streak: number;
+  totalSessions: number;
+}
+
+export async function fetchPerformance(): Promise<PerformanceData> {
+  const res = await fetch(`${API_BASE}/performance`);
+  if (!res.ok) throw new Error('Failed to fetch performance');
+  return res.json();
+}
+
 export async function submitAnswer(problemId: string, answerIndex: number): Promise<AnswerResult> {
   const res = await fetch(`${API_BASE}/answer`, {
     method: 'POST',
