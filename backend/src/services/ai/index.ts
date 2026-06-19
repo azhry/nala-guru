@@ -1,10 +1,12 @@
 import { AIProvider, ProblemData } from './provider';
 import { OpencodeProvider } from './opencode';
 import { OpenAIProvider } from './openai';
+import { LocalProvider } from './local';
 
-const providers: AIProvider[] = [
+const providers: (AIProvider | LocalProvider)[] = [
   new OpenAIProvider(),
   new OpencodeProvider(),
+  new LocalProvider(),
 ];
 
 export async function generateProblem(level: string): Promise<ProblemData> {
