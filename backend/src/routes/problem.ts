@@ -5,7 +5,7 @@ import { generateProblem } from '../services/ai';
 
 export const problemRouter = Router();
 
-const LEVELS = ['counting', 'addition_1', 'addition_2', 'subtraction_1', 'shapes'];
+const LEVELS = ['L1', 'L2', 'L3', 'L4', 'L5'];
 
 function getLevel(sessionCount: number): string {
   const idx = Math.min(Math.floor(sessionCount / 10), LEVELS.length - 1);

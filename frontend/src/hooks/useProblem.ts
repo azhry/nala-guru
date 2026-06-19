@@ -9,7 +9,7 @@ export function useProblem() {
   const [result, setResult] = useState<AnswerResult | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [error, setError] = useState<string>('');
-  const levelRef = useRef<string>('counting');
+  const levelRef = useRef<string>('L1');
 
   const loadProblem = useCallback(async () => {
     setState('loading');
@@ -54,5 +54,6 @@ export function useProblem() {
     error,
     pickAnswer,
     nextProblem,
+    currentLevel: levelRef.current,
   };
 }

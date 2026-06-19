@@ -1,4 +1,12 @@
-const LEVELS = ['counting', 'addition_1', 'addition_2', 'subtraction_1', 'shapes'];
+export const LEVELS = ['L1', 'L2', 'L3', 'L4', 'L5'];
+
+export const LEVEL_NAMES: Record<string, string> = {
+  L1: 'Crawler',
+  L2: 'Toddler',
+  L3: 'Walker',
+  L4: 'Runner',
+  L5: 'Climber',
+};
 
 const STREAK_THRESHOLD = 3;
 const STREAK_DROP = 2;
@@ -59,31 +67,33 @@ export class Calibrator {
   }
 
   getGuide(correct: boolean, level: string): { text: string; visuals: string[] } {
+    const displayName = LEVEL_NAMES[level] || level;
+
     if (correct) {
       return {
-        text: `Great job! You solved it correctly at ${level} level!`,
+        text: `Great job! You solved it correctly at ${displayName} level!`,
         visuals: ['star-burst', 'check-mark'],
       };
     }
 
     const guides: Record<string, { text: string; visuals: string[] }> = {
-      counting: {
+      L1: {
         text: 'Count each item slowly. Point to each one as you count.',
         visuals: ['counting-fingers', 'dots-visual'],
       },
-      addition_1: {
+      L2: {
         text: 'Try using your fingers to add the numbers together.',
         visuals: ['finger-counting', 'number-line'],
       },
-      addition_2: {
+      L3: {
         text: 'Break the bigger number into tens and ones.',
         visuals: ['place-value', 'number-blocks'],
       },
-      subtraction_1: {
+      L4: {
         text: 'Start with the bigger number, then count backward.',
         visuals: ['count-back', 'number-line'],
       },
-      shapes: {
+      L5: {
         text: 'Look at the shape edges and corners to count them.',
         visuals: ['shape-guide', 'edge-count'],
       },

@@ -1,23 +1,17 @@
 import { usePerformance } from '../hooks/usePerformance';
 
-const LEVEL_LABELS: Record<string, string> = {
-  counting: 'Counting',
-  addition_1: 'Addition (Basic)',
-  addition_2: 'Addition (Advanced)',
-  subtraction_1: 'Subtraction',
-  shapes: 'Shapes',
-};
+import { LEVEL_NAMES } from '../levelNames';
 
 const LEVEL_COLORS: Record<string, string> = {
-  counting: '#FF6B6B',
-  addition_1: '#4ECDC4',
-  addition_2: '#FFE66D',
-  subtraction_1: '#95E1D3',
-  shapes: '#A78BFA',
+  L1: '#FF6B6B',
+  L2: '#4ECDC4',
+  L3: '#FFE66D',
+  L4: '#95E1D3',
+  L5: '#A78BFA',
 };
 
 function AccuracyBar({ level, accuracy }: { level: string; accuracy: number }) {
-  const label = LEVEL_LABELS[level] || level;
+  const label = LEVEL_NAMES[level] || level;
   const color = LEVEL_COLORS[level] || '#4ECDC4';
   return (
     <div className="mb-3">
@@ -62,7 +56,7 @@ export function DashboardPage() {
       <div className="card text-center">
         <h2 className="text-2xl font-bold text-baby-text mb-2">Current Level</h2>
         <p className="text-4xl font-bold text-baby-primary">
-          {LEVEL_LABELS[data.currentLevel] || data.currentLevel}
+          {LEVEL_NAMES[data.currentLevel] || data.currentLevel}
         </p>
       </div>
 
@@ -106,7 +100,7 @@ export function DashboardPage() {
                     {s.correct ? '✓' : '✗'}
                   </span>
                   <span className="text-sm text-baby-text">
-                    {LEVEL_LABELS[s.level] || s.level}
+                    {LEVEL_NAMES[s.level] || s.level}
                   </span>
                 </div>
                 <span className="text-xs text-gray-400">

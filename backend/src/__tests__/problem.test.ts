@@ -16,7 +16,7 @@ vi.mock('../models/Problem', () => {
     prompt: 'What is 1 + 1?',
     choices: ['1', '2', '3', '4'],
     correctIndex: 1,
-    level: 'counting',
+    level: 'L1',
     ...overrides,
   });
 
@@ -46,19 +46,19 @@ describe('Problem API - BE-001', () => {
   });
 
   it('generates a problem via AI when cache is empty', async () => {
-    const result = await generateProblem('counting');
+    const result = await generateProblem('L1');
 
     expect(result).toMatchObject({
       prompt: expect.any(String),
       choices: expect.arrayContaining([expect.any(String)]),
       correctIndex: expect.any(Number),
-      level: 'counting',
+      level: 'L1',
     });
     expect(result.choices).toHaveLength(4);
   });
 
   it('produces problem matching CONTRACT-001 fields', async () => {
-    const result = await generateProblem('counting');
+    const result = await generateProblem('L1');
 
     expect(result).toHaveProperty('problemId');
     expect(result).toHaveProperty('prompt');
@@ -80,7 +80,7 @@ describe('Problem API - BE-001', () => {
   });
 
   it('generates problems at different levels', async () => {
-    const levels = ['counting', 'addition_1', 'subtraction_1'];
+    const levels = ['L1', 'L2', 'L4'];
 
     for (const level of levels) {
       (Problem.findOne as any).mockResolvedValueOnce(null);

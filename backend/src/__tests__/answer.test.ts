@@ -25,7 +25,7 @@ vi.mock('../models/Problem', () => ({
       prompt: 'What is 2 + 2?',
       choices: ['3', '4', '5', '6'],
       correctIndex: 1,
-      level: 'counting',
+      level: 'L1',
     }),
   },
 }));
@@ -54,7 +54,7 @@ describe('Calibrator - BE-002', () => {
   it('getGuide returns correct structure', async () => {
     const { Calibrator } = await import('../services/calibration');
     const c = new Calibrator();
-    const guide = c.getGuide(true, 'counting');
+    const guide = c.getGuide(true, 'L1');
 
     expect(guide).toHaveProperty('text');
     expect(guide).toHaveProperty('visuals');
@@ -66,7 +66,7 @@ describe('Calibrator - BE-002', () => {
     const { Calibrator } = await import('../services/calibration');
     const c = new Calibrator();
     const level = c.getCurrentLevel();
-    const validLevels = ['counting', 'addition_1', 'addition_2', 'subtraction_1', 'shapes'];
+    const validLevels = ['L1', 'L2', 'L3', 'L4', 'L5'];
     expect(validLevels).toContain(level);
   });
 });

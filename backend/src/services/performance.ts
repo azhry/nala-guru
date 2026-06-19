@@ -1,6 +1,6 @@
 import { Session } from '../models/Session';
 
-const LEVELS = ['counting', 'addition_1', 'addition_2', 'subtraction_1', 'shapes'];
+const LEVELS = ['L1', 'L2', 'L3', 'L4', 'L5'];
 
 export interface LevelAccuracy {
   level: string;
@@ -57,7 +57,7 @@ export async function getPerformance(): Promise<PerformanceData> {
 
   return {
     currentLevel,
-    accuracyByLevel: accuracyByLevel.filter((a) => a.total > 0),
+    accuracyByLevel: accuracyByLevel,
     sessions: sessions.slice(0, 20),
     streak,
     totalSessions: allSessions.length,

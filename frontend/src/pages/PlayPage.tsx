@@ -1,9 +1,10 @@
 import { useProblem } from '../hooks/useProblem';
 import { ProblemDisplay } from '../components/ProblemDisplay';
 import { FeedbackAnimation } from '../components/FeedbackAnimation';
+import { LevelIndicator } from '../components/LevelIndicator';
 
 export function PlayPage() {
-  const { problem, state, result, selectedIndex, error, pickAnswer, nextProblem } = useProblem();
+  const { problem, state, result, selectedIndex, error, pickAnswer, nextProblem, currentLevel } = useProblem();
 
   if (state === 'loading') {
     return (
@@ -26,6 +27,8 @@ export function PlayPage() {
 
   return (
     <div className="space-y-6">
+      <LevelIndicator level={currentLevel} />
+
       {state === 'playing' && problem && (
         <ProblemDisplay
           problem={problem}
