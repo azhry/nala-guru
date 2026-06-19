@@ -7,6 +7,59 @@
     @apply bg-baby-bg text-baby-text font-sans antialiased;
     -webkit-tap-highlight-color: transparent;
   }
+
+  .high-contrast body,
+  .high-contrast {
+    --color-bg: #000000;
+    --color-text: #FFFFFF;
+    --color-primary: #FF4444;
+    --color-secondary: #00FFAA;
+    --color-accent: #FFFF00;
+  }
+
+  .high-contrast body {
+    @apply bg-black text-white;
+  }
+
+  .high-contrast .bg-baby-bg {
+    @apply bg-black;
+  }
+
+  .high-contrast .text-baby-text {
+    @apply text-white;
+  }
+
+  .high-contrast .text-baby-primary {
+    @apply text-red-400;
+  }
+
+  .high-contrast .bg-baby-primary {
+    @apply bg-red-600;
+  }
+
+  .high-contrast .text-baby-secondary {
+    @apply text-green-300;
+  }
+
+  .high-contrast .bg-baby-secondary {
+    @apply bg-green-700;
+  }
+
+  .high-contrast .bg-white {
+    @apply bg-gray-900;
+  }
+
+  .high-contrast .border-gray-100 {
+    @apply border-gray-700;
+  }
+
+  .high-contrast .bg-gray-200 {
+    @apply bg-gray-700;
+  }
+
+  .high-contrast .text-gray-400 {
+    @apply text-gray-300;
+  }
 }
 
 @layer components {
@@ -25,6 +78,18 @@
   }
 
   .card {
-    @apply bg-white rounded-3xl shadow-lg p-6;
+    @apply bg-white rounded-3xl shadow-lg p-4 sm:p-6;
+  }
+}
+
+@media (max-width: 374px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    @apply p-8;
   }
 }
