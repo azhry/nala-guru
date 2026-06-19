@@ -10,6 +10,7 @@ export function useProblem() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [error, setError] = useState<string>('');
   const levelRef = useRef<string>('L1');
+  const lastPromptRef = useRef<string>('');
 
   const loadProblem = useCallback(async () => {
     setState('loading');
@@ -18,7 +19,14 @@ export function useProblem() {
     setError('');
     try {
       const p = await fetchProblem(levelRef.current);
-      setProblem(p);
+      if (p.prompt === lastPromptRef.current) {
+        const retry = await fetchProblem(levelRef.current);
+        setProblem(retry);
+        lastPromptRef.current = retry.prompt;
+      } else {
+        setProblem(p);
+        lastPromptRef.current = p.prompt;
+      }
       setState('playing');
     } catch (err) {
       setError('Failed to load problem');
