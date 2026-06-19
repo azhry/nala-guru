@@ -39,7 +39,7 @@ describe('Answer API - BE-002', () => {
   });
 
   it('validates problem_id and answer_index are required', async () => {
-    const mockReq = { body: {} } as any;
+    const mockReq = { method: 'POST', body: {} } as any;
     const mockRes = {
       status: vi.fn().mockReturnThis(),
       json: vi.fn(),
