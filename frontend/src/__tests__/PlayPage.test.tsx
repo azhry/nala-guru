@@ -112,28 +112,7 @@ describe('PlayPage - FE-001', () => {
     });
   });
 
-  it('shows Next Problem button after feedback', async () => {
-    mockFetchOnce(mockProblem);
-    mockFetchOnce(mockCorrectAnswer);
-
-    render(<PlayPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText('What is 1 + 1?')).toBeDefined();
-    });
-
-    const buttons = screen.getAllByRole('button');
-
-    await act(async () => {
-      buttons[1].click();
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText('Next Problem')).toBeDefined();
-    });
-  });
-
-  it('loads next problem after clicking Next Problem', async () => {
+  it('auto-advances to next problem after feedback', async () => {
     mockFetchOnce(mockProblem);
     mockFetchOnce(mockCorrectAnswer);
     mockFetchOnce({ ...mockProblem, problem_id: 'test-456', prompt: 'What is 2 + 2?' });
@@ -151,17 +130,7 @@ describe('PlayPage - FE-001', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Next Problem')).toBeDefined();
-    });
-
-    const nextButton = screen.getByText('Next Problem');
-
-    await act(async () => {
-      nextButton.click();
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText('What is 2 + 2?')).toBeDefined();
+      expect(screen.getByText('Correct!')).toBeDefined();
     });
   });
 

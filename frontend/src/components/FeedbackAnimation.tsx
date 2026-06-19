@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnswerResult } from '../api';
 
@@ -10,6 +11,28 @@ const emojis = ['🌟', '🎉', '⭐', '👏', '💪'];
 
 export function FeedbackAnimation({ result, onNext }: Props) {
   const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+  const [phase, setPhase] = useState<'feedback' | 'countdown'>('feedback');
+  const [count, setCount] = useState(3);
+
+  useEffect(() => {
+    setPhase('feedback');
+    setCount(3);
+
+    const feedbackTimer = setTimeout(() => setPhase('countdown'), 2000);
+    return () => clearTimeout(feedbackTimer);
+  }, [result]);
+
+  useEffect(() => {
+    if (phase !== 'countdown') return;
+
+    if (count <= 0) {
+      onNext();
+      return;
+    }
+
+    const timer = setTimeout(() => setCount((c) => c - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [phase, count, onNext]);
 
   return (
     <AnimatePresence>
@@ -39,13 +62,15 @@ export function FeedbackAnimation({ result, onNext }: Props) {
           </>
         )}
 
-        <button
-          onClick={onNext}
-          className="bg-baby-primary text-white text-xl font-bold px-8 py-4 rounded-2xl 
-                     active:scale-95 transition-transform"
-        >
-          Next Problem
-        </button>
+        {phase === 'countdown' && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-lg text-baby-text"
+          >
+            Next problem in {count}...
+          </motion.p>
+        )}
       </motion.div>
     </AnimatePresence>
   );
