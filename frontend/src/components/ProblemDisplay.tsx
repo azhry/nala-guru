@@ -14,7 +14,7 @@ export function ProblemDisplay({ problem, selectedIndex, onSelect }: Props) {
         key={problem.problem_id}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-3xl md:text-4xl font-bold text-baby-text mb-8 leading-relaxed font-quicksand"
+        className="text-5xl sm:text-6xl md:text-7xl font-bold text-baby-text mb-8 leading-tight font-quicksand tracking-tight"
       >
         {problem.prompt}
       </motion.p>
