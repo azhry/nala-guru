@@ -3,7 +3,7 @@ import { fetchProblem, submitAnswer, Problem, AnswerResult } from '../api';
 
 export type PlayState = 'loading' | 'playing' | 'feedback' | 'error';
 
-export function useProblem() {
+export function useProblem(locale = 'en') {
   const [problem, setProblem] = useState<Problem | null>(null);
   const [state, setState] = useState<PlayState>('loading');
   const [result, setResult] = useState<AnswerResult | null>(null);
@@ -23,21 +23,22 @@ export function useProblem() {
     setResult(null);
     setError('');
     try {
-      const p = await fetchProblem(levelRef.current);
-      if (p.prompt === lastPromptRef.current) {
-        const retry = await fetchProblem(levelRef.current);
+      const p = await fetchProblem(levelRef.current, locale);
+      const promptKey = `${locale}:${p.prompt}`;
+      if (promptKey === lastPromptRef.current) {
+        const retry = await fetchProblem(levelRef.current, locale);
         setProblem(retry);
-        lastPromptRef.current = retry.prompt;
+        lastPromptRef.current = `${locale}:${retry.prompt}`;
       } else {
         setProblem(p);
-        lastPromptRef.current = p.prompt;
+        lastPromptRef.current = promptKey;
       }
       setState('playing');
     } catch (err) {
       setError('Failed to load problem');
       setState('error');
     }
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     loadProblem();
@@ -48,7 +49,7 @@ export function useProblem() {
     setSelectedIndex(index);
     setState('feedback');
     try {
-      const res = await submitAnswer(problem.problem_id, index);
+      const res = await submitAnswer(problem.problem_id, index, locale);
       setResult(res);
       if (res.level_changed && res.new_level) {
         setLevelChanged(true);
@@ -61,7 +62,7 @@ export function useProblem() {
     } catch {
       setResult({ correct: false, guide_text: 'Something went wrong', guide_visuals: [] });
     }
-  }, [problem, state]);
+  }, [locale, problem, state]);
 
   const dismissLevelUp = useCallback(() => {
     setLevelChanged(false);

@@ -4,12 +4,17 @@ const DEFAULT_PIN = '1234';
 const STORAGE_KEY_MUTED = 'baby-math-muted';
 const STORAGE_KEY_HIGH_CONTRAST = 'baby-math-high-contrast';
 const STORAGE_KEY_PIN = 'baby-math-pin';
+const STORAGE_KEY_LOCALE = 'baby-math-locale';
+
+export type Locale = 'en' | 'id';
 
 interface SettingsContextValue {
   muted: boolean;
   toggleMute: () => void;
   highContrast: boolean;
   toggleHighContrast: () => void;
+  locale: Locale;
+  toggleLocale: () => void;
   pin: string | null;
   setPin: (pin: string) => void;
   clearPin: () => void;
@@ -21,6 +26,7 @@ const SettingsContext = createContext<SettingsContextValue | null>(null);
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [muted, setMuted] = useState(() => localStorage.getItem(STORAGE_KEY_MUTED) === 'true');
   const [highContrast, setHighContrast] = useState(() => localStorage.getItem(STORAGE_KEY_HIGH_CONTRAST) === 'true');
+  const [locale, setLocale] = useState<Locale>(() => (localStorage.getItem(STORAGE_KEY_LOCALE) === 'id' ? 'id' : 'en'));
   const [pin, setPinState] = useState<string | null>(() => localStorage.getItem(STORAGE_KEY_PIN));
 
   useEffect(() => {
@@ -43,6 +49,14 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const toggleLocale = useCallback(() => {
+    setLocale((prev) => {
+      const next: Locale = prev === 'en' ? 'id' : 'en';
+      localStorage.setItem(STORAGE_KEY_LOCALE, next);
+      return next;
+    });
+  }, []);
+
   const setPin = useCallback((newPin: string) => {
     localStorage.setItem(STORAGE_KEY_PIN, newPin);
     setPinState(newPin);
@@ -56,7 +70,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const validatePin = useCallback((input: string) => input === DEFAULT_PIN, []);
 
   return (
-    <SettingsContext.Provider value={{ muted, toggleMute, highContrast, toggleHighContrast, pin, setPin, clearPin, validatePin }}>
+    <SettingsContext.Provider value={{ muted, toggleMute, highContrast, toggleHighContrast, locale, toggleLocale, pin, setPin, clearPin, validatePin }}>
       {children}
     </SettingsContext.Provider>
   );

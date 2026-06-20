@@ -6,8 +6,12 @@ import { LEVEL_NAMES } from '../levelNames';
 
 const LEVELS = ['L1', 'L2', 'L3', 'L4', 'L5'];
 
-export function PlayPage() {
-  const { problem, state, result, selectedIndex, error, pickAnswer, nextProblem, currentLevel, levelChanged, newLevel, dismissLevelUp } = useProblem();
+interface PlayPageProps {
+  locale?: string;
+}
+
+export function PlayPage({ locale = 'en' }: PlayPageProps) {
+  const { problem, state, result, selectedIndex, error, pickAnswer, nextProblem, currentLevel, levelChanged, newLevel, dismissLevelUp } = useProblem(locale);
 
   const currentLevelIndex = LEVELS.indexOf(currentLevel);
   const levelName = LEVEL_NAMES[currentLevel] || currentLevel;

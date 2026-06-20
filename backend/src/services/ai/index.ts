@@ -3,17 +3,21 @@ import { OpencodeProvider } from './opencode';
 import { OpenAIProvider } from './openai';
 import { LocalProvider } from './local';
 
+const openaiProvider = new OpenAIProvider();
+const opencodeProvider = new OpencodeProvider();
+const localProvider = new LocalProvider();
+
 const providers: (AIProvider | LocalProvider)[] = [
-  new OpenAIProvider(),
-  new OpencodeProvider(),
-  new LocalProvider(),
+  openaiProvider,
+  opencodeProvider,
+  localProvider,
 ];
 
-export async function generateProblem(level: string): Promise<ProblemData> {
+export async function generateProblem(level: string, locale?: string): Promise<ProblemData> {
   const errors: Error[] = [];
   for (const provider of providers) {
     try {
-      return await provider.generateProblem(level);
+      return await provider.generateProblem(level, locale);
     } catch (err) {
       errors.push(err as Error);
     }
@@ -22,3 +26,4 @@ export async function generateProblem(level: string): Promise<ProblemData> {
 }
 
 export { AIProvider, ProblemData } from './provider';
+export { detectLocale } from './locales';

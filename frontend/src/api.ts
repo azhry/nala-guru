@@ -17,9 +17,13 @@ export interface AnswerResult {
   progress_pct?: number;
 }
 
-export async function fetchProblem(level?: string): Promise<Problem> {
-  const params = level ? `?level=${level}` : '';
-  const res = await fetch(`${API_BASE}/problem${params}`);
+export async function fetchProblem(level?: string, locale = 'en'): Promise<Problem> {
+  const params = new URLSearchParams();
+  if (level) params.set('level', level);
+  params.set('lang', locale);
+  const res = await fetch(`${API_BASE}/problem?${params.toString()}`, {
+    headers: { 'Accept-Language': locale },
+  });
   if (!res.ok) throw new Error('Failed to fetch problem');
   return res.json();
 }
@@ -69,10 +73,10 @@ export async function createAccount(babyName: string, babyBirthDate: string): Pr
   return res.json();
 }
 
-export async function submitAnswer(problemId: string, answerIndex: number): Promise<AnswerResult> {
-  const res = await fetch(`${API_BASE}/answer`, {
+export async function submitAnswer(problemId: string, answerIndex: number, locale = 'en'): Promise<AnswerResult> {
+  const res = await fetch(`${API_BASE}/answer?lang=${encodeURIComponent(locale)}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Accept-Language': locale },
     body: JSON.stringify({ problem_id: problemId, answer_index: answerIndex }),
   });
   if (!res.ok) throw new Error('Failed to submit answer');

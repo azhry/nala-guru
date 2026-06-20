@@ -14,16 +14,19 @@ const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 export class OpenAIProvider implements AIProvider {
   name = 'openai';
 
-  async generateProblem(level: string): Promise<ProblemData> {
+  async generateProblem(level: string, locale?: string): Promise<ProblemData> {
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       throw new Error('OPENAI_API_KEY not configured');
     }
 
-    const systemPrompt = `You generate math problems for young children (ages 2-5) at various levels.
-Return valid JSON only with fields: prompt (string), choices (array of 4 strings), correctIndex (number 0-3).`;
+    const isIndonesian = (locale || '').toLowerCase().startsWith('id');
+    const languageName = isIndonesian ? 'Bahasa Indonesia' : 'English';
 
-    const userPrompt = `Generate a math problem at level "${level}".`;
+    const systemPrompt = `You generate math problems for young children (ages 2-5) at various levels.
+Use ${languageName}. Return valid JSON only with fields: prompt (string), choices (array of 4 strings), correctIndex (number 0-3).`;
+
+    const userPrompt = `Generate a math problem at level "${level}" in ${languageName}.`;
 
     const res = await fetch(OPENAI_API_URL, {
       method: 'POST',
