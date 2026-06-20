@@ -5,8 +5,11 @@ import { AIProvider, ProblemData } from './provider';
 export class OpencodeProvider implements AIProvider {
   name = 'opencode';
 
-  async generateProblem(level: string): Promise<ProblemData> {
-    const prompt = `Generate a math problem for a young child at level "${level}".
+  async generateProblem(level: string, locale?: string): Promise<ProblemData> {
+    const isIndonesian = (locale || '').toLowerCase().startsWith('id');
+    const languageName = isIndonesian ? 'Bahasa Indonesia' : 'English';
+
+    const prompt = `Generate a math problem for a young child at level "${level}" in ${languageName}.
 Return valid JSON only (no markdown, no extra text) with fields:
 {
   "prompt": "string - the math question",

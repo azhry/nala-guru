@@ -1,3 +1,5 @@
+import { t } from './ai/locales';
+
 export const LEVELS = ['L1', 'L2', 'L3', 'L4', 'L5'];
 
 export const LEVEL_NAMES: Record<string, string> = {
@@ -95,42 +97,36 @@ export class Calibrator {
     return lastN.every((s) => !s.correct);
   }
 
-  getGuide(correct: boolean, level: string): { text: string; visuals: string[] } {
+  getGuide(correct: boolean, level: string, locale = 'en'): { text: string; visuals: string[] } {
+    const strings = t(locale);
     const displayName = LEVEL_NAMES[level] || level;
 
     if (correct) {
       return {
-        text: `Great job! You solved it correctly at ${displayName} level!`,
+        text: strings.calibrator.correct(displayName),
         visuals: ['star-burst', 'check-mark'],
       };
     }
 
-    const guides: Record<string, { text: string; visuals: string[] }> = {
-      L1: {
-        text: 'Count each item slowly. Point to each one as you count.',
-        visuals: ['counting-fingers', 'dots-visual'],
-      },
-      L2: {
-        text: 'Try using your fingers to add the numbers together.',
-        visuals: ['finger-counting', 'number-line'],
-      },
-      L3: {
-        text: 'Break the bigger number into tens and ones.',
-        visuals: ['place-value', 'number-blocks'],
-      },
-      L4: {
-        text: 'Start with the bigger number, then count backward.',
-        visuals: ['count-back', 'number-line'],
-      },
-      L5: {
-        text: 'Look at the shape edges and corners to count them.',
-        visuals: ['shape-guide', 'edge-count'],
-      },
+    const guideTexts: Record<string, string> = {
+      L1: strings.calibrator.L1,
+      L2: strings.calibrator.L2,
+      L3: strings.calibrator.L3,
+      L4: strings.calibrator.L4,
+      L5: strings.calibrator.L5,
     };
 
-    return guides[level] || {
-      text: 'Try again! Think carefully about the question.',
-      visuals: ['think-bubble'],
+    const visuals: Record<string, string[]> = {
+      L1: ['counting-fingers', 'dots-visual'],
+      L2: ['finger-counting', 'number-line'],
+      L3: ['place-value', 'number-blocks'],
+      L4: ['count-back', 'number-line'],
+      L5: ['shape-guide', 'edge-count'],
+    };
+
+    return {
+      text: guideTexts[level] || strings.calibrator.fallback,
+      visuals: visuals[level] || ['think-bubble'],
     };
   }
 }

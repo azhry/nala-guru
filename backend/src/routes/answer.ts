@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { Problem } from '../models/Problem';
 import { Session } from '../models/Session';
 import { Calibrator } from '../services/calibration';
+import { detectLocale } from '../services/ai/locales';
 
 export const answerRouter = Router();
 
@@ -33,6 +34,8 @@ answerRouter.post('/answer', async (req: Request, res: Response) => {
       .limit(20)
       .lean();
 
+    const locale = detectLocale(req);
+
     const calibrator = new Calibrator(
       recentSessions.reverse().map((s) => ({
         correct: s.correct,
@@ -40,10 +43,9 @@ answerRouter.post('/answer', async (req: Request, res: Response) => {
         timestamp: s.timestamp,
       }))
     );
-
     const newLevel = calibrator.getCurrentLevel();
     const levelChange = calibrator.getLevelChangeInfo(newLevel);
-    const guide = calibrator.getGuide(correct, problem.level);
+    const guide = calibrator.getGuide(correct, problem.level, locale);
 
     return res.json({
       correct,

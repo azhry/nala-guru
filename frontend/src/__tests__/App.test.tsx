@@ -127,6 +127,19 @@ describe('App - FE-003', () => {
     expect(document.documentElement.classList.contains('high-contrast')).toBe(true);
   });
 
+  it('toggles language preference', () => {
+    render(<App />);
+    const langBtn = screen.getByLabelText('Switch to Indonesian');
+    expect(langBtn).toBeDefined();
+
+    act(() => {
+      langBtn.click();
+    });
+
+    expect(screen.getByLabelText('Switch to English')).toBeDefined();
+    expect(localStorage.getItem('baby-math-locale')).toBe('id');
+  });
+
   it('navigates back to Play from Dashboard', async () => {
     mockSmart();
     render(<App />);

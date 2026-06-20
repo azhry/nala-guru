@@ -8,7 +8,7 @@ import { OnboardingPage } from './pages/OnboardingPage';
 type Tab = 'play' | 'dashboard';
 
 function SettingsBar() {
-  const { muted, toggleMute, highContrast, toggleHighContrast } = useSettings();
+  const { muted, toggleMute, highContrast, toggleHighContrast, locale, toggleLocale } = useSettings();
 
   return (
     <div className="flex items-center gap-2">
@@ -17,8 +17,16 @@ function SettingsBar() {
         className="w-12 h-12 rounded-full bg-baby-surface-container-high flex items-center justify-center hover:bg-baby-primary-container/20 transition-colors active:scale-95 duration-150"
         aria-label={muted ? 'Unmute sound' : 'Mute sound'}
         title={muted ? 'Unmute' : 'Mute'}
+        >
+          <span className="text-xl">{muted ? '🔇' : '🔊'}</span>
+      </button>
+      <button
+        onClick={toggleLocale}
+        className="w-12 h-12 rounded-full bg-baby-surface-container-high flex items-center justify-center hover:bg-baby-primary-container/20 transition-colors active:scale-95 duration-150 font-quicksand font-bold text-sm"
+        aria-label={locale === 'en' ? 'Switch to Indonesian' : 'Switch to English'}
+        title={locale === 'en' ? 'Language: EN' : 'Language: ID'}
       >
-        <span className="text-xl">{muted ? '🔇' : '🔊'}</span>
+        <span>{locale.toUpperCase()}</span>
       </button>
       <button
         onClick={toggleHighContrast}
@@ -35,7 +43,7 @@ function SettingsBar() {
 function AppContent() {
   const [onboarded, setOnboarded] = useState(() => localStorage.getItem('baby-math-onboarding') === 'complete');
   const [tab, setTab] = useState<Tab>('play');
-  const { pin } = useSettings();
+  const { pin, locale } = useSettings();
   const [pinAccepted, setPinAccepted] = useState(false);
 
   if (!onboarded) {
@@ -63,7 +71,7 @@ function AppContent() {
 
       <main className="max-w-4xl mx-auto px-3 sm:px-4 pb-8 pt-4">
         {tab === 'play' ? (
-          <PlayPage />
+          <PlayPage locale={locale} />
         ) : pin ? (
           <DashboardPage />
         ) : pinAccepted ? (

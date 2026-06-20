@@ -7,6 +7,6 @@ export interface ProblemData {
 }
 
 export interface AIProvider {
-  generateProblem(level: string): Promise<ProblemData>;
+  generateProblem(level: string, locale?: string): Promise<ProblemData>;
   name: string;
 }
